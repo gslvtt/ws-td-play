@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-background : #31363F;
+  --color-background-secondary : #222831;
+  --color-text-main : #FFF7F1;
+  --color-interactive-active : #607274;
+  --color-interactive-passive : #424c4d;
+}
