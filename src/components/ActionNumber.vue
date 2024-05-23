@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="submitNumberAction">
+        <button class="delete-button" v-if="mode==='delete'" @click="removeAction(index)"></button>
         <h3 class="action-title">{{title}}</h3>
         <p class="italic">{{actionName}}</p>
         <p>step: {{ step }}</p>
@@ -15,11 +16,14 @@
   import { inject, ref } from 'vue';
   import { DataWS } from '../useSocketTools';
   // Loss of reactivity of props is not relevant.
-  const { title, actionName, range, step} = defineProps<{
+  const { title, actionName, range, step, index} = defineProps<{
     title: string;
     actionName : string;
     step : number;
     range? : [number, number];
+    index : number;
+    removeAction : (index : number) => void;
+    mode : string;
   }>()
   const number = ref<number | string>('');
   const lastSent = ref<string>('');

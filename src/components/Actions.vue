@@ -1,27 +1,36 @@
 <template>
   <div class="actions-container">
-    <template v-for="(action) in actions" :key="`$index`">
-      <component class="action-content" :is="determineActionComponent(action.type)" :title="action.title" :actionName="action.actionName" :step="action.step" :range="action.range"></component>
+    <template v-for="(action, index) in actions" :key="`$index`">
+      <component class="action-content" :is="determineActionComponent(action.type)" :title="action.title" :actionName="action.actionName" :step="action.step" :range="action.range" :index :removeAction :mode></component>
     </template>
-    <CreateActionForm class="action-content" v-show="mode === 'add'" :setMode :addAction></CreateActionForm>
+    <CreateActionForm class="action-content" v-if="mode === 'add'" :setMode :addAction></CreateActionForm>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, watch } from 'vue';
   import { type Mode, type SetMode, type Action } from '../types';
   import CreateActionForm from './CreateActionForm.vue';
   import ActionArray from './ActionArray.vue';
   import ActionNumber from './ActionNumber.vue';
   import ActionSlider from './ActionSlider.vue';
+  import { getLocalStorage, updateLocalStorage } from '../useLocalStorage';
 
   // import Form from './Form.vue'
   defineProps<{ setMode : SetMode; mode: Mode}>();
 
-  const actions = ref<Action[]>([]);
+  const actions = ref<Action[]>(getLocalStorage() || []);
+
+  // let result = computed(updateLocalStorage(actions));
+  watch(actions.value, updateLocalStorage, { deep: true });
 
   function addAction (action : Action) :void {
     actions.value.push(action);
+  }
+
+  function removeAction (index:number) {
+    actions.value.splice(index,1);
+    
   }
 
   function determineActionComponent (type : string) {
@@ -37,7 +46,6 @@
     }
   }
 
-
 </script>
 
 <style>
@@ -51,6 +59,7 @@
 }
 
 .action-content {
+  position: relative;
   height: 280px;
   width: 300px;
   background-color: var(--color-background-secondary);
@@ -151,6 +160,15 @@ button:hover {
   border: 2px inset;
 }
 
+.delete-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: url('../assets/delete.png') no-repeat;
+  height:1rem;
+  width: 1rem;
+  background-size:contain;
+}
 
 
 </style>
