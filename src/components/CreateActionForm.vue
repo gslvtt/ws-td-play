@@ -32,9 +32,9 @@
 
 <script setup lang="ts">
   import { ref, computed } from 'vue';
-  import { SetMode } from '../types';
+  import { Action, ActionType, SetMode } from '../types';
 
-  const props = defineProps<{ setMode : SetMode }>();
+  const props = defineProps<{ setMode : SetMode, addAction : (action : Action) => void }>();
 
   const title = ref<string>('');
   const actionName = ref<string>('');
@@ -63,24 +63,35 @@
     return true;
   }
 
-  function createActionHandler () {
-
-    const actionData = {
-      title : title.value,
-      actionName: actionName.value,
-      type : type.value,
-      step : computedStep.value
-    }
-    if (!validateRange(actionData)) return;
-    console.log(actionData);
-
+  function resetFormValues () {
     title.value = '';
     actionName.value = '';
-    type.value = 'number';
+    type.value = '';
+    stepInput.value = '';
     range.value[0] = 0;
     range.value[1] = 100;
     rangeApplied.value= false;
-    props.setMode('play');
+  }
+
+  function formatActionData() {
+    const actionData : Action = {
+      title : title.value,
+      actionName: actionName.value,
+      type : type.value as ActionType,
+      step : computedStep.value
+    }
+    if (!validateRange(actionData)) return null;
+    else return actionData;
+  }
+  
+  function createActionHandler () {
+    const action : Action | null = formatActionData()
+
+    if (action !== null) {
+      resetFormValues();
+      props.addAction(action);
+      props.setMode('play');
+    }
   }
 
 </script>

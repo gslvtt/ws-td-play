@@ -20,9 +20,9 @@
     title: string;
     actionName : string;
     step : number;
-    range? : [number, number];
+    range : [number, number];
   }>()
-  const number = ref<number | string>('');
+  const number = ref<number>((range[1] + range[0])/2);
   const lastSent = ref<string>('');
 
   const {handleSend} = inject('webSocketTools') as {handleSend : (data : DataWS) => void}

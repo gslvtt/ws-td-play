@@ -1,39 +1,41 @@
 <template>
   <div class="actions-container">
-      <CreateActionForm class="action-content" v-if="mode === 'add'" :setMode></CreateActionForm>
-      <!-- <Form class="action-content" v-if="mode === 'add'" :setMode></Form> -->
-      <ActionArray class="action-content" title="Drop Coordinates" actionName="dropCoords" :step="0.01" :range="[0,1]" ></ActionArray>
-      <ActionNumber class="action-content" title="Brightness" actionName="light_one_bright" :step="1" :range="[0,100]" ></ActionNumber>
-      <ActionSlider class="action-content" title="Brightness" actionName="light_one_bright" :step="1" :range="[0,100]" ></ActionSlider>
-
-    <div class="action-content">
-      <h3>Light 2</h3>
-      <p>Sets brightness</p>
-
-    </div>
-
+    <template v-for="(action) in actions" :key="`$index`">
+      <component class="action-content" :is="determineActionComponent(action.type)" :title="action.title" :actionName="action.actionName" :step="action.step" :range="action.range"></component>
+    </template>
+    <CreateActionForm class="action-content" v-show="mode === 'add'" :setMode :addAction></CreateActionForm>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { type Mode, type SetMode } from '../types';
+  import { type Mode, type SetMode, type Action } from '../types';
   import CreateActionForm from './CreateActionForm.vue';
   import ActionArray from './ActionArray.vue';
   import ActionNumber from './ActionNumber.vue';
   import ActionSlider from './ActionSlider.vue';
 
-  type Action = {
-    title : string;
-    actionName : string;
-    step : number;
-    range? : [number, number];
-  }
-
   // import Form from './Form.vue'
   defineProps<{ setMode : SetMode; mode: Mode}>();
 
-  const actions = ref<Action[]>([])
+  const actions = ref<Action[]>([]);
+
+  function addAction (action : Action) :void {
+    actions.value.push(action);
+  }
+
+  function determineActionComponent (type : string) {
+    switch (type) {
+      case 'number':
+        return ActionNumber;
+      case 'slider':
+        return ActionSlider;
+      case 'array':
+        return ActionArray;
+      default:
+        break;
+    }
+  }
 
 
 </script>
