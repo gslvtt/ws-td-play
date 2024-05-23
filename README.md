@@ -3,12 +3,14 @@ Web client for testing websocket interactions with Touch Designer
 
 ## To-Dos
 
-- Implement requirement of inputs on Action Creation Form.
-- Enforce limitations to actionName string input
-- Implement optional randomization for all action Send and optional sync for slider
-- Create Slider and Number Action Components
+<!-- - Create Slider and Number Action Components -->
+- Implement actions state and display in Actions component
+- Add action to actions state on CreateActionForm submit
+
+- Finish styling inputs and refactor to use proper css syntax
+- Organize Code and remove repetition from CreateActionForm, ActionSlider, ActionNumber, and ActionArray and Actions
+
 - Create Default Number | Array | Slider Component that sends simple data.
-- Implement Integer or Decimal options during action creation.
-- Implement optional range option for all Actions during creation.
+- Implement optional randomization for all action Send and optional sync for slider
 
 

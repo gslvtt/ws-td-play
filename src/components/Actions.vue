@@ -2,7 +2,10 @@
   <div class="actions-container">
       <CreateActionForm class="action-content" v-if="mode === 'add'" :setMode></CreateActionForm>
       <!-- <Form class="action-content" v-if="mode === 'add'" :setMode></Form> -->
-      <ActionArray class="action-content" title="Drop Coordinates" actionName="dropCoords" :range="[0,1]" ></ActionArray>
+      <ActionArray class="action-content" title="Drop Coordinates" actionName="dropCoords" :step="0.01" :range="[0,1]" ></ActionArray>
+      <ActionNumber class="action-content" title="Brightness" actionName="light_one_bright" :step="1" :range="[0,100]" ></ActionNumber>
+      <ActionSlider class="action-content" title="Brightness" actionName="light_one_bright" :step="1" :range="[0,100]" ></ActionSlider>
+
     <div class="action-content">
       <h3>Light 2</h3>
       <p>Sets brightness</p>
@@ -13,12 +16,24 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue';
   import { type Mode, type SetMode } from '../types';
   import CreateActionForm from './CreateActionForm.vue';
   import ActionArray from './ActionArray.vue';
+  import ActionNumber from './ActionNumber.vue';
+  import ActionSlider from './ActionSlider.vue';
+
+  type Action = {
+    title : string;
+    actionName : string;
+    step : number;
+    range? : [number, number];
+  }
 
   // import Form from './Form.vue'
-  const props = defineProps<{ setMode : SetMode; mode: Mode}>();
+  defineProps<{ setMode : SetMode; mode: Mode}>();
+
+  const actions = ref<Action[]>([])
 
 
 </script>
@@ -34,7 +49,7 @@
 }
 
 .action-content {
-  height: 250px;
+  height: 280px;
   width: 300px;
   background-color: var(--color-background-secondary);
   /* border: 2px solid var(--color-text-main); */
@@ -74,9 +89,45 @@ input:target {
   font-weight: 600;
 }
 
-.action-name {
+.italic {
   font-style: italic;
 }
+
+.number-input {
+text-align: center;
+}
+
+.slider-input {
+  cursor: pointer;
+}
+
+/* input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 15rem;
+} */
+
+/* input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--color-text-main);
+
+  border-radius: 10px;
+  border: 2px solid aqua;
+  height: 0.5rem;
+} */
+
+/******** Firefox ********/
+/* input[type="range"]::-moz-range-track {
+  background: #ca2222;
+  height: 0.5rem;
+} */
+
+/* input[type="range"]::-moz-range-thumb {
+  background: #ca2222;
+  height: 0.5rem;
+  border: var(--color-text-main);
+} */
 
 button {
   padding: 1rem 1rem;

@@ -11,7 +11,7 @@
   import { type Mode, type SetMode } from './types';
   import Modes from './components/Modes.vue';
   import Actions from './components/Actions.vue'
-  import useSocketTools, {type DataWS} from './useSocketTools';
+  import useSocketTools from './useSocketTools';
 
   const mode = ref<Mode>('play');
   const setMode : SetMode = (newMode) => {
