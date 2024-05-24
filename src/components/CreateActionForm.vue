@@ -5,7 +5,7 @@
       <input type="text" v-model.trim="title" v-focus required>
     </div>
     <div class="input-group">
-      <p class="input-label">Event:</p>
+      <p class="input-label">Action:</p>
       <input type="text" v-model.trim="actionName" pattern="[a-zA-Z_]+" title="[a-zA-Z_]+" placeholder="ex. lightOne or light_one"required>
     </div>
     <div class="input-group">
@@ -15,16 +15,18 @@
       <label class="input-label" for="arr">Array</label>
       <input class="radio-input" name="type" type="radio" id="sli" value="slider" @click="()=>rangeApplied=true" v-model="type" required>
       <label class="input-label" for="sli">Slider</label>
+      <input class="radio-input" name="type" type="radio" id="tex" value="text" v-model="type" required>
+      <label class="input-label" for="tex">Text</label>
     </div>
     <div class="input-group">
       <p class="input-label" style="min-width: 5rem;">Step (10<sup>x</sup>):</p>     
-      <input class="number-input" type="number" placeholder="x" step="1" v-model.number="stepInput" required>
+      <input class="number-input" type="number" placeholder="x" step="1" v-model.number="stepInput" :disabled="type === 'text'" required>
     </div>
     <div class="input-group">
-      <input type="checkbox" v-model="rangeApplied" :required="type==='slider'">
+      <input type="checkbox" v-model="rangeApplied" :disabled="type === 'text'" :required="type==='slider'">
       <p class="input-label">Range:</p>
-      <input class="number-input" type="number" placeholder="Min" :disabled="!rangeApplied" :step="computedStep" v-model.number="range[0]" :required="rangeApplied">
-      <input class="number-input" type="number" placeholder="Max" :disabled="!rangeApplied" :step="computedStep" v-model.number="range[1]" :required="rangeApplied">
+      <input class="number-input" type="number" placeholder="Min" :disabled="!rangeApplied || type === 'text'" :step="computedStep" v-model.number="range[0]" :required="rangeApplied">
+      <input class="number-input" type="number" placeholder="Max" :disabled="!rangeApplied || type === 'text'" :step="computedStep" v-model.number="range[1]" :required="rangeApplied">
     </div>
     <button type="submit">Create</button>
   </form>
@@ -83,7 +85,7 @@
     if (!validateRange(actionData)) return null;
     else return actionData;
   }
-  
+
   function createActionHandler () {
     const action : Action | null = formatActionData()
 

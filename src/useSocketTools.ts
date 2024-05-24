@@ -4,15 +4,18 @@ const { ws }: { ws : WebSocket } = useWebSocket();
 
 export type DataWS = {
   actionName : string;
-  value: number | [number, number]
+  value: number | [number, number] | string;
 }
 
-function wsSendJson (data: DataWS): void {
-  ws.send(JSON.stringify(data));
+function stringifyData (data: DataWS): string {
+  const jsonData = JSON.stringify(data);
+  console.log(jsonData);
+  return jsonData;
 }
 
 function handleSend (data : DataWS) : void {
-  wsSendJson(data); 
+  ws.send(stringifyData(data));
+  // wsSendJson(data); 
 }
 
 export default function useSocketTools () {

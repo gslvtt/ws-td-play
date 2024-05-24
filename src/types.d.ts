@@ -1,5 +1,5 @@
 export type Mode = 'play' | 'move' | 'delete' | 'add';
-export type ActionType = 'number' |' slider' | 'array';
+export type ActionType = 'number' |' slider' | 'array' | 'text';
 export type SetMode = (newMode : Mode) => void;
 export type Action = {
   type : ActionType;

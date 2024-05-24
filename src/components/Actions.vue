@@ -14,6 +14,7 @@
   import ActionArray from './ActionArray.vue';
   import ActionNumber from './ActionNumber.vue';
   import ActionSlider from './ActionSlider.vue';
+  import ActionText from './ActionText.vue';
   import { getLocalStorage, updateLocalStorage } from '../useLocalStorage';
 
   // import Form from './Form.vue'
@@ -41,6 +42,8 @@
         return ActionSlider;
       case 'array':
         return ActionArray;
+        case 'text':
+        return ActionText;
       default:
         break;
     }
@@ -82,7 +85,8 @@
   justify-content: space-between;
 }
 
-input {
+input,
+textarea {
   padding:0.25rem;
   width: 100%;
   border-radius: 5px;
@@ -90,7 +94,8 @@ input {
   font-size: 1rem;
 }
 
-input:target {
+input:target,
+textarea:target {
   background: var(--color-interactive-passive);
   border: 2px solid var(--color-text-main);
   color: var(--color-text-main);
@@ -110,6 +115,10 @@ text-align: center;
 
 .slider-input {
   cursor: pointer;
+}
+
+.text-area-input {
+  resize: none;
 }
 
 /* input[type="range"] {
